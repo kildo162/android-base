@@ -1,5 +1,6 @@
 plugins {
     id 'com.android.library'
+    id 'maven-publish'
 }
 
 android {
@@ -25,6 +26,55 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    def versionPropsFile = file('version.properties')
+    if (!versionPropsFile.canRead()) {
+        throw new GradleException("Could not read version.properties!")
+    }
+
+    def Properties versionProps = new Properties()
+    versionProps.load(new FileInputStream(versionPropsFile))
+
+    def _versionName = versionProps['VERSION_NAME']
+    def _artifactId = versionProps['ARTIFACT_ID']
+
+    def GithubPropsFile = file('github.properties')
+    if (!GithubPropsFile.canRead()) {
+        throw new GradleException("Could not read github.properties!")
+    }
+
+    def Properties githubProps = new Properties()
+    githubProps.load(new FileInputStream(GithubPropsFile))
+
+    def _urs = githubProps['gpr.usr']
+    def _key = githubProps['gpr.key']
+
+    publishing {
+        publications {
+            bar(MavenPublication) {
+                groupId 'com.kildo.libraries' // Replace with group ID
+                artifactId _artifactId
+                version _versionName
+                artifact("$buildDir/outputs/aar/${_artifactId}-release.aar")
+            }
+        }
+
+        repositories {
+            maven {
+                name = "android-base"
+                /** Configure path of your package repository on Github
+                 *  Replace GITHUB_USERID with your/organisation Github userID and REPOSITORY with the repository name on GitHub
+                 */
+                url = uri("https://maven.pkg.github.com/kildo162/android-base")
+
+                credentials {
+                    /**Create github.properties in root project folder file with gpr.usr=GITHUB_USER_ID  & gpr.key=PERSONAL_ACCESS_TOKEN**/
+                    username = _urs ?: System.getenv("GPR_USER")
+                    password = _key ?: System.getenv("GPR_API_KEY")
+                }
+            }
+        }
     }
 }
 
