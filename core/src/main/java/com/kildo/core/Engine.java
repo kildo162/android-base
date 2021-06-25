@@ -20,25 +20,48 @@ public class Engine {
         return engine;
     }
 
+    /*
+     * Register a component
+     * @param Component
+     * */
     public void registerComponent(Component component) {
         components.put(component.getClass(), component);
     }
 
+    /*
+     * Get a component cast with class
+     * @param: Class type
+     * return component (cast by type)
+     * */
     public <T extends Component> T getComponent(Class<T> type) {
         return type.cast(components.get(type));
     }
 
+    // Engine init
     public void init() {
 
     }
 
+    /*
+    * Engine start
+    * Begin init all components after start all component
+    * */
     public void start() {
-        for (Component c : components.values()) c.init();
-        for (Component c : components.values()) c.start();
+        for (Component c : components.values()) {
+            c.init();
+        }
+        for (Component c : components.values()) {
+            c.start();
+        }
     }
 
+    /*
+    * Engine stop
+    * */
     public void stop() {
-        for (Component c : components.values()) c.stop();
+        for (Component c : components.values()) {
+            c.stop();
+        }
     }
 
     private ExecutorService createExecutor() {
@@ -46,8 +69,10 @@ public class Engine {
         return Executors.newFixedThreadPool(size);
     }
 
+    /*
+    * Make schedule an operation and run it
+    * */
     public void schedule(Operation operation) {
         executor.execute(operation);
     }
-
 }
