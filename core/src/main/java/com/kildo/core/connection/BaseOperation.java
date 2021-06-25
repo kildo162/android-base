@@ -3,7 +3,7 @@ package com.kildo.core.connection;
 import com.kildo.core.Operation;
 
 /**
- * @author kildo (khanhnd162@fortna.com)
+ * @author kildo (khanhnd162@gmail.com)
  * @version 1.0.0
  * @created 6/25/21
  */

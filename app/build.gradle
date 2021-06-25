@@ -3,6 +3,20 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        debug {
+            storeFile file('/home/kildo/resources/kildo/android-base/app/storekey.jks')
+            storePassword '123456a@'
+            keyAlias 'store'
+            keyPassword '123456a@'
+        }
+        release {
+        storeFile file('/home/kildo/resources/kildo/android-base/app/storekey.jks')
+            storePassword '123456a@'
+            keyPassword '123456a@'
+            keyAlias 'store'
+        }
+    }
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
 
