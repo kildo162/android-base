@@ -14,3 +14,7 @@
 .cxx
 local.properties
 core/github.properties
+
+app/build
+app/debug
+.idea
